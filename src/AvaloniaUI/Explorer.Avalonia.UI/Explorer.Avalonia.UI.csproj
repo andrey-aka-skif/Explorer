@@ -18,6 +18,6 @@
     <PackageReference Include="Microsoft.NETCore.Platforms" Version="6.0.0" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Explorer.Shared.ViewModels\Explorer.Shared.ViewModels.csproj" />
+    <ProjectReference Include="..\..\Core\Explorer.Shared.ViewModels\Explorer.Shared.ViewModels.csproj" />
   </ItemGroup>
 </Project>
