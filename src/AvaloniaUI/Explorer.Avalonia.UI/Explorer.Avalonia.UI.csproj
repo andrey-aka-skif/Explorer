@@ -10,6 +10,12 @@
     <Folder Include="Models\" />
     <AvaloniaResource Include="Assets\**" />
     <None Remove=".gitignore" />
+    <None Remove="Controls\DirectoryTabItem.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaXaml Include="Controls\DirectoryTabItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </AvaloniaXaml>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.10.10" />
@@ -24,5 +30,10 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Explorer.Shared.ViewModels\Explorer.Shared.ViewModels.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Controls\DirectoryTabItem.xaml.cs">
+      <DependentUpon>DirectoryTabItem.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>
