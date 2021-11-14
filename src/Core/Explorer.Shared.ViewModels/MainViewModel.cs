@@ -1,20 +1,29 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Windows.Input;
 
 namespace Explorer.Shared.ViewModels
 {
-    public class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel : BaseViewModel
     {
         #region Public Properties
 
-        public string MainDiskName { get; set; }
+        public ObservableCollection<DirectoryTabItemViewModel> DirectoryTabItems { get; set; } =
+            new ObservableCollection<DirectoryTabItemViewModel>();
+
+        public DirectoryTabItemViewModel CurrentDirectoryTabItem { get; set; }
+
+        #endregion
+
+        #region Commands
+
+        public DelegeteCommand AddTabItemCommand { get; }
 
         #endregion
 
         #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion
 
@@ -22,16 +31,56 @@ namespace Explorer.Shared.ViewModels
 
         public MainViewModel()
         {
-            MainDiskName = Environment.SystemDirectory;
+            AddTabItemCommand = new DelegeteCommand(OnAddTabItem);
+
+            
+            AddTabItemViewModel();
+
         }
 
         #endregion
 
         #region Protected Methods
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        #endregion
+
+        #region Commands Methods
+
+        private void OnAddTabItem(object obj)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            AddTabItemViewModel();
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void AddTabItemViewModel()
+        {
+            var vm = new DirectoryTabItemViewModel();
+
+            vm.Closed += Vm_Closed;
+
+            DirectoryTabItems.Add(vm);
+
+            CurrentDirectoryTabItem = vm;
+        }
+
+        private void Vm_Closed(object sender, System.EventArgs e)
+        {
+            if (sender is DirectoryTabItemViewModel directoryTabItemViewModel)
+            {
+                CloseTab(directoryTabItemViewModel);
+            }
+        }
+
+        private void CloseTab(DirectoryTabItemViewModel directoryTabItemViewModel)
+        {
+            directoryTabItemViewModel.Closed -= Vm_Closed;
+
+            DirectoryTabItems.Remove(directoryTabItemViewModel);
+
+            CurrentDirectoryTabItem = DirectoryTabItems.FirstOrDefault();
         }
 
         #endregion
